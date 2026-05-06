@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facilnanzas - Tu Gestor Digital</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="pantalla-login" class="login-wrapper">
+        <div class="login-caja">
+            <img src="./LOGO_FACILNANZAS.png" alt="Logo" class="login-logo">
+            <h2 id="login-titulo">Iniciar Sesión</h2>
+            <p id="login-subtitulo" class="login-desc">Bienvenido de nuevo a tu gestor inteligente.</p>
+
+            <form id="formulario-login">
+                <div class="input-grupo">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="login-email-input" placeholder="ejemplo@empresa.com" required>
+                </div>
+                
+                <div class="input-grupo">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-pass-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" id="btn-entrar" class="btn btn-primary btn-full">
+                    <span id="texto-btn-entrar">Acceder a mi cuenta</span>
+                    <div id="spinner-login" class="spinner-pequeno oculto"></div>
+                </button>
+            </form>
+
+            <p class="login-cambio">
+                <span id="texto-cambio">¿No tienes cuenta?</span> 
+                <a href="#" id="link-cambio">Regístrate gratis</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div id="aplicacion-principal" class = "oculto">
+        
+        <header>
+            <img src="./LOGO_FACILNANZAS.png" alt="Logo FaciLnanzas" id="logo-empresa">
+            
+            <div class="header-titulo">
+                <span class="color-facil">FACIL</span><span class="color-nanzas">NANZAS</span>
+            </div>
+
+            <div class="header-botones">
+                <button id="btn-header-ayuda" class="btn-header">❓ Ayuda</button>
+                <button id="btn-header-perfil" class="btn-header">👤 Mi Perfil</button>
+            </div>
+        </header>
+
+        <div class="app-container">
+            
+            <div class="badge-app"> Arrastra, Valida y Gestiona tus facturas al instante</div>
+            
+            <nav class="menu-navegacion">
+                <button id="nav-escaner" class="nav-btn activo">📥 Subir Tickets</button>
+                <button id="nav-finanzas" class="nav-btn">📊 Ver Finanzas</button>
+                <button id="nav-historico" class="nav-btn">🗂️ Histórico</button>
+            </nav>
+
+            <div id="vista-escaner" class="vista-activa">
+                <div id="seccion-procesamiento">
+                    <div id="zona-dropzone" class="dropzone">
+                        <div id="contenido-dropzone">
+                            <span class="icono-upload">🛒</span>
+                            <h3>Arrastra tu ticket aquí</h3>
+                            <p>Suelte PDFs digitales o fotos (PNG, JPG)</p>
+                        </div>
+                        <div id="spinner-gemini" class="oculto">
+                            <span class="icono-ai">🧠</span>
+                            <div class="loader"></div>
+                            <p>Gemini AI extrayendo datos...</p>
+                        </div>
+                        <input type="file" id="input-archivo" accept=".pdf, .jpg, .jpeg, .png" hidden>
+                    </div>
+                    
+                    <div id="alerta-error" class="oculto" style="background-color: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin-top: 15px; border: 1px solid #f87171; text-align: center; font-weight: 500;">
+                        <span style="margin-right: 8px;">⚠️</span>
+                        <span id="texto-alerta-error">Aquí irá el texto del error</span>
+                    </div>
+                </div>
+            </div>
+                <div id="zona-validacion" class="oculto">
+                    <h3>Revisión de Datos</h3>
+                    <p style="color: #666; margin-bottom: 20px;">La IA ha extraído esta información. Haz clic en las celdas si necesitas corregir algo.</p>
+                    <div class="tabla-contenedor">
+                        <table id="tabla-datos" class="tabla-facilnanzas">
+                            <thead>
+                                <tr><th>Producto</th><th>Cantidad</th><th>Precio (€)</th><th>Supermercado</th></tr>
+                            </thead>
+                            <tbody id="cuerpo-tabla"></tbody>
+                        </table>
+                    </div>
+                    <div class="button-group">
+                        <button id="btn-nuevo" class="btn btn-outline">➕ Subir Otro</button>
+                        <button id="btn-guardar" class="btn btn-success">✅ Confirmar y Guardar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="vista-finanzas" class="oculto">
+                <div class="filtro-contenedor">
+                    <label for="filtro-fechas" style="font-weight: 500; color: #555;">Filtrar por:</label>
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: 5px;">
+                        <select id="filtro-fechas" class="filtro-select" style="margin: 0;">
+                            <option value="este_mes">Este Mes</option>
+                            <option value="mes_pasado">Mes Pasado</option>
+                            <option value="todo_ano">Todo el Año</option>
+                            <option value="historico_total">Histórico Total</option>
+                        </select>
+                        <button id="btn-aplicar-filtro" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.9rem; min-width: auto;">Aplicar</button>
+                    </div>
+                </div>
+                <div class="kpi-carousel-wrapper">
+                    <button class="carousel-btn">❮</button>
+                    <div class="kpi-contenedor">
+                        <div class="kpi-tarjeta"><h4>Gasto Total</h4><p id="kpi-total" class="kpi-valor">0.00 €</p></div>
+                        <div class="kpi-tarjeta"><h4>Súper Favorito</h4><p id="kpi-super" class="kpi-valor text-naranja">-</p></div>
+                        <div class="kpi-tarjeta"><h4>Ticket más caro</h4><p id="kpi-ticket" class="kpi-valor">0.00 €</p></div>
+                    </div>
+                    <button class="carousel-btn">❯</button>
+                </div>
+                <div class="grafico-contenedor">
+                    <h3 style="color: var(--text-dark); margin-bottom: 20px;">Distribución de Gastos</h3>
+                    <div class="canvas-wrapper"><canvas id="ruletaGastos"></canvas></div>
+                </div>
+            </div>
+            <div id="vista-historico" class="oculto">
+                <div class="buscador-contenedor" style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+                    <span class="icono-lupa">🔍</span>
+                    <input type="text" id="buscador-historico" placeholder="Ej. Aceite, Mercadona..." style="flex: 1; margin: 0;">
+                    <button id="btn-buscar-historico" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.9rem; min-width: auto;">Buscar</button>
+                </div>
+
+                <div class="tabla-contenedor">
+                    <table class="tabla-facilnanzas" style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #eee;">
+                                <th>Fecha</th>
+                                <th>Supermercado</th>
+                                <th>Producto</th>
+                                <th>Precio Ud (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-historico">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="vista-perfil" class="oculto">
+                <div class="perfil-contenedor">
+                    <div class="perfil-header">
+                        <div class="perfil-avatar">👤</div>
+                        <div class="perfil-info">
+                            <h2 id="perfil-nombre">Usuario FaciLnanzas</h2>
+                            <p id="perfil-email">usuario@facilnanzas.com</p>
+                        </div>
+                    </div>
+                    <div class="perfil-grid">
+                        <div class="config-card">
+                            <h3>Ajustes de Cuenta</h3>
+                            <div class="config-lista">
+                                <button class="config-item">🔒 Cambiar Contraseña</button>
+                                <button id="btn-cerrar-sesion" class="config-item text-rojo">🚪 Cerrar Sesión</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="vista-ayuda" class="oculto">
+                <div class="perfil-grid">
+                    <div class="config-card">
+                        <h3>Preguntas Frecuentes</h3>
+                        <div class="faq-item"><h4>¿Cómo funciona la IA?</h4><p>Solo tienes que arrastrar un PDF o foto de tu ticket y Gemini hace el resto.</p></div>
+                        <div class="faq-item"><h4>¿Puedo corregir errores?</h4><p>¡Sí! Antes de guardar, siempre te mostramos una tabla que puedes editar haciendo clic.</p></div>
+                    </div>
+                    <div class="config-card">
+                        <h3>Contacto Directo</h3>
+                        <p>¿Tienes problemas? Llámanos directamente, somos humanos.</p>
+                        <div class="contacto-info mt-3">
+                            <div class="contacto-linea">
+                                <span class="icono-contacto">📞</span>
+                                <div>
+                                    <strong>Llámanos (WhatsApp disponible)</strong>
+                                    <p class="text-naranja" style="font-size: 1.3rem; margin: 0; font-weight: bold;">688 86 13 63</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 30px; width: 100%; justify-content: center;">Enviar un Ticket de Soporte</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> 
+    
+    <div id="toast-container" class="toast-container"></div>
+    <script src="script.js"></script>
+</body>
+</html>
