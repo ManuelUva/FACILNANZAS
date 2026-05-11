@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 BASE_DIR = Path(__file__).resolve().parent.parent
 os.chdir(str(BASE_DIR))
 
-CARPETA_FACTURAS = BASE_DIR / "facturas" / "procesar"
+CARPETA_FACTURAS = BASE_DIR / "FACTURAS" / "procesar"
 CARPETA_FACTURAS.mkdir(parents=True, exist_ok=True)
 
 sys.path.append(str(BASE_DIR / "scripts"))
